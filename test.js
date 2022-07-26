@@ -1,6 +1,7 @@
-const person = {
-  name: "Taylor",
-  sayHello: () => this.name
-};
+console.log("sample test \n hiy'`a")
+console.log(`sample test \n hiy'"\`a`)
+x=7;
+y='9';
 
-console.log(person.sayHello())
+console.log(x==y);
+console.log(x, y)

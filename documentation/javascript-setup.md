@@ -33,6 +33,14 @@
     - [regex exact matches](#regex-exact-matches)
     - [find more than first match](#find-more-than-first-match)
     - [lazy matching characters](#lazy-matching-characters)
+    - [positive and negative lookahead](#positive-and-negative-lookahead)
+    - [re-use using capture groups](#re-use-using-capture-groups)
+    - [capture groups to search and replace](#capture-groups-to-search-and-replace)
+    - [Debugging.](#debugging)
+      - [mixed usage of single and double quotes](#mixed-usage-of-single-and-double-quotes)
+      - [asignment instead of equality operator](#asignment-instead-of-equality-operator)
+      - [Re-initializing Variables Inside Loop](#re-initializing-variables-inside-loop)
+    - [basic data structures.](#basic-data-structures)
 
 
 
@@ -832,4 +840,221 @@ there's the wildcard
 ### lazy matching characters
 
 regular expressions by default are `greed matching`
+```js
+let text = "<h1>Winter is coming</h1>";
+let myRegex = /<.*?>/; // Change this line
+let result = text.match(myRegex);
+console.log(result)
+```
+this enables `?` lazy matching, so instead of matching the entire h1 including closing it just matches the tag
+
+it's very similar to vim with the caret (^) and $ end of line matching.
+
+equivalent shortcuts
+`\w` => `[A-Za-z0-9_]`
+
+adding g matches it more than once.
+`\w` => `[^A-Za-z0-9_]`
+
+
+had a sorta complex case I was working on
+`/^[a-z][a-z]+\d*$|^[a-z]\d\d+$/i`
+that basically does some sorta username match condition.
+
+
+more than this js course why am I not putting this in the regex vscode project that I have?
+
+
+`{}` - quantity specifiers
+
+`?` - check for all or none outside the damn thing, not lazy matching.
+british / us words
+`colou?r`
+`favou?rite`
+
+### positive and negative lookahead
+positive - `(?=...)` ... required part not matched
+negative - `(?!...)` ... that you do not want to be there.
+
+
+so here's an example.
+
+```js
+let sampleWord = 
+`
+astr1on11aut
+astronaut
+a11onaut
+11onaut
+aa11on1anout
+a1a1a11onaout
+lookaheads
+12345
+`;
+let pwRegex = /(?=\w{6})(?=\w*\d{2})\w+/g; // Change this line
+let result = sampleWord.match(pwRegex);
+console.log(result);
+```
+
+you'll notice that the lookahead's don't actuall contribute to the results, simple a pre-filter. and a `w+` right after is what finally gets the capture not to mention g because we need all those results.
+
+an for similar reasons
+```js
+let pwRegex = /(?=\w{6})(?=\w*\d{2}\w*)\w+/g; // Change this line
+```
+this also works because of the same reasons tbh
+
+I should be weary of this particular example lol
+so even if you shuffle those lookahead bracket groups you should theoretically get the same result lmao.
+
+
+### re-use using capture groups
+
+```js
+let repeatRegex = /(\w+) \1 \1/;
+repeatRegex.test(repeatStr); // Returns true
+repeatStr.match(repeatRegex); // Returns ["row row row", "row"]
+```
+
+if you got a second capture group you could also use `\2` but beware the \s shits scary combined with $- end of string kinda thing.
+
+yeah be sure to revisit this damn thing
+
+
+### capture groups to search and replace
+
+```js
+"Code Camp".replace(/(\w+)\s(\w+)/, '$2 $1');
+```
+access capture groups in the replacement string with dollar signs.
+
+
+```js
+let str = "one two three";
+let fixRegex = /(\w+)\s(\w+)\s(\w+)/; // Change this line
+let replaceText = "$3 $2 $1"; // Change this line
+let result = str.replace(fixRegex, replaceText);
+```
+follows the same format ig
+
+apparently the method i had was genius
+```js
+let hello = "   Hello, World!  ";
+let wsRegex = /(\s+\W)/g; // Change this line
+let result = hello.replace(wsRegex, ""); // Change this line
+console.log(result)
+```
+over at [regex101.com](https://regex101.com/) I found out that 
+if you combo `\s+\w` / `(\s+\W+)` you can basically conquer any **trailing** space 
+
+just got done with regular expressions as well? crazy bruh. 
+
+
+### Debugging.
+don't be afraid to use `typeof`
+
+it will recognize
+- Boolean
+- Null
+- Undefined
+- Number
+- String
+- Symbol (ES6)
+- BigInt (ES2020)
+
+make sure you highlight the variables to make sure you don't have any typos
+
+#### mixed usage of single and double quotes
+you have to escape the quotes using `\` in case there's all of them mixed
+
+```js
+console.log("sample test \n hiy'`a")
+console.log(`sample test \n hiy'"\`a`)
+```
+
+I think i'm gonna stick with `backticks` because you can do character swap as well.
+
+
+#### asignment instead of equality operator
+```js
+x=7;
+y=9;
+
+console.log(x=y);
+console.log(x, y)
+
+```
+i've been victim to this, idk why js lets it do that, but always gotta be careful. it re-writes both the values to be the same value, so it's really hard to catch. Always use `===`
+
+
+#### Re-initializing Variables Inside Loop
+Sometimes it's necessary to save information, increment counters, or re-set variables within a loop. A potential issue is when variables either should be reinitialized, and aren't, or vice versa. This is particularly dangerous if you accidentally reset the variable being used for the terminal condition, causing an infinite loop.
+
+use `console.log()` to uncover such behavior.
+
+
+```js
+function zeroArray(m, n) {
+  // Creates a 2-D array with m rows and n columns of zeroes
+  let newArray = [];
+  let row = [];
+  for (let i = 0; i < m; i++) {
+    // Adds the m-th row into newArray
+
+    for (let j = 0; j < n; j++) {
+      // Pushes n zeroes into the current row to create the columns
+      row.push(0);
+    }
+    // Pushes the current row, which now has n zeroes in it, to the array
+    newArray.push(row);
+    row = []; // added line to reset row variable.
+
+  }
+  return newArray;
+}
+
+let matrix = zeroArray(3, 2);
+console.log(matrix);
+
+```
+like this behavior
+
+because of the let in each line it keeps coming back?
+this took me a while to understand but basically I wasn't realizing that the array `row` variable wasn't resetting at all.
+
+damn that's pathetic.
+
+
+### basic data structures.
+
+javascript array types can contain all datatypes
+```js
+let simpleArray = ['one', 2, 'three', true, false, undefined, null];
+```
+complex arrays are also a thing.
+
+```js
+let complexArray = [
+  [
+    {
+      one: 1,
+      two: 2
+    },
+    {
+      three: 3,
+      four: 4
+    }
+  ],
+  [
+    {
+      a: "a",
+      b: "b"
+    },
+    {
+      c: "c",
+      d: "d"
+    }
+  ]
+];
+```
 
