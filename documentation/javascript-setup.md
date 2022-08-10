@@ -36,11 +36,21 @@
     - [positive and negative lookahead](#positive-and-negative-lookahead)
     - [re-use using capture groups](#re-use-using-capture-groups)
     - [capture groups to search and replace](#capture-groups-to-search-and-replace)
-    - [Debugging.](#debugging)
+  - [Debugging.](#debugging)
       - [mixed usage of single and double quotes](#mixed-usage-of-single-and-double-quotes)
       - [asignment instead of equality operator](#asignment-instead-of-equality-operator)
       - [Re-initializing Variables Inside Loop](#re-initializing-variables-inside-loop)
-    - [basic data structures.](#basic-data-structures)
+  - [basic data structures.](#basic-data-structures)
+    - [arrays](#arrays)
+    - [copy array items using slice()](#copy-array-items-using-slice)
+    - [spread operator ES6](#spread-operator-es6)
+    - [combine arrays with Spread Operator](#combine-arrays-with-spread-operator)
+    - [check presence of element in Array using `indexOf()`](#check-presence-of-element-in-array-using-indexof)
+    - [Iterate through All an Array's items Using For Loop](#iterate-through-all-an-arrays-items-using-for-loop)
+    - [complex multi-dimensional arrays](#complex-multi-dimensional-arrays)
+    - [Javascript Objects Key Value Pairs](#javascript-objects-key-value-pairs)
+    - [modify Object Nested within Object](#modify-object-nested-within-object)
+    - [delete object property](#delete-object-property)
 
 
 
@@ -49,6 +59,7 @@
 I thought I'd take the freecodecamp 300 hours of training first and right away, it' is like a whole ass game.
 
 [javascript algorithms and data structures](https://www.freecodecamp.org/learn/javascript-algorithms-and-data-structures/)
+[gitbook // learn-javascript](https://gitbook.gitbook.io/learn-javascript/)
 
 when javascript variables are declared, their initial values are `undefined`
 
@@ -950,7 +961,7 @@ if you combo `\s+\w` / `(\s+\W+)` you can basically conquer any **trailing** spa
 just got done with regular expressions as well? crazy bruh. 
 
 
-### Debugging.
+## Debugging.
 don't be afraid to use `typeof`
 
 it will recognize
@@ -1025,8 +1036,10 @@ this took me a while to understand but basically I wasn't realizing that the arr
 damn that's pathetic.
 
 
-### basic data structures.
+## basic data structures.
 
+
+### arrays
 javascript array types can contain all datatypes
 ```js
 let simpleArray = ['one', 2, 'three', true, false, undefined, null];
@@ -1057,4 +1070,162 @@ let complexArray = [
   ]
 ];
 ```
+we can also easily overwrite the arrays using bracket notation assignment.
 
+arrays are *mutable*
+`Object.freeze()` notation works on arrays.
+
+```js
+arr.push(7, 'VIII', 9)
+  arr.unshift('I', 2, 'three')
+```
+you can do that straight to arrays.
+
+`pop()` and `shift()` unlike their cousins don't take in any arguments, they only modify one element at a time.
+
+only one element is removed at a time.
+
+
+if we want to remove items however, `splice()` comes in.
+*remove any number of consecutive elements*
+
+can take 3 parameters
+one is position one is offset.
+
+```js
+const numbers = [10, 11, 12, 12, 15];
+const startIndex = 3;
+const amountToDelete = 1;
+
+numbers.splice(startIndex, amountToDelete, 13, 14);
+console.log(numbers);
+```
+
+3rd parameter just add the rest in.
+
+
+### copy array items using slice()
+i guess there's a `splice()` and a `splice()`
+rather tan modifying array, it copies / extracts a given number of elements to a new array.
+
+give it its positions.
+
+### spread operator ES6
+apparently you can keep updating an array with the spread operator.
+
+```js
+newArr.push([...arr]);
+```
+
+### combine arrays with Spread Operator
+
+```js
+let thisArray = ['sage', 'rosemary', 'parsley', 'thyme'];
+
+let thatArray = ['basil', 'cilantro', ...thisArray, 'coriander'];
+```
+interesting.
+
+### check presence of element in Array using `indexOf()`
+
+returns the position / index of the element given as its function parameter, but returns -1 if the element does not exist in the array.
+
+```js
+let fruits = ['apples', 'pears', 'oranges', 'peaches', 'pears'];
+
+fruits.indexOf('dates');
+```
+
+iterate methods include => `every()` `forEach()` `map()`
+
+
+### Iterate through All an Array's items Using For Loop
+required file
+
+that's so cool I actually completed this. 
+
+[source file](../iterate-array-loop-delete.js)
+basically solved it using indexOf and splice together to determine the location of the sub element of the array.
+
+
+### complex multi-dimensional arrays
+
+```js
+let nestedArray = [
+  ['deep'],
+  [
+    ['deeper'], ['deeper'] 
+  ],
+  [
+    [
+      ['deepest'], ['deepest']
+    ],
+    [
+      [
+        ['deepest-est?']
+      ]
+    ]
+  ]
+];
+
+// access "deepest-est?"
+console.log(nestedArray[2][1][0][0][0]);
+
+```
+this is just example
+
+array has level to depth
+
+
+we used a semi complex function to determine the depth of basically any array.
+
+### Javascript Objects Key Value Pairs
+
+```js
+const tekkenCharacter = {
+  player: 'Hwoarang',
+  fightingStyle: 'Tae Kwon Doe',
+  human: true
+};
+```
+in order to add additional `properties`
+```js
+tekkenCharacter.origin = 'South Korea';
+```
+alternative way to add
+depending on how you want it.
+you can also replace 'hair' with a `variable`
+```js
+tekkenCharacter['hair'] = 'Dyed Orange';
+```
+3 ways
+
+
+### modify Object Nested within Object
+this is how you modify nested objects
+
+[nested Object internal array access](../objectNestedObject.js)
+this is interesting because I find a way to store the value path
+
+```js
+let userActivity = {
+  id: 23894201352,
+  date: 'January 1, 2017',
+  data: {
+    totalUsers: 51,
+    online: 42
+  }
+};
+
+let keyObj = ['data', 'online']
+  
+userActivity[keyObj[0]][keyObj[1]] = 35
+console.log(userActivity[keyObj[0]][keyObj[1]])
+```
+
+### delete object property
+```js
+delete food.apples
+```
+
+how to delete multiple? probably an array
