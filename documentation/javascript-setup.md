@@ -51,6 +51,12 @@
     - [Javascript Objects Key Value Pairs](#javascript-objects-key-value-pairs)
     - [modify Object Nested within Object](#modify-object-nested-within-object)
     - [delete object property](#delete-object-property)
+    - [check if object hasOwnProperty()](#check-if-object-hasownproperty)
+    - [Iterate through the keys of object with for statement](#iterate-through-the-keys-of-object-with-for-statement)
+    - [Modify an Array Stored in an Object](#modify-an-array-stored-in-an-object)
+- [Basic Algorithm Scripting](#basic-algorithm-scripting)
+    - [reverse a string](#reverse-a-string)
+    - [recursive](#recursive)
 
 
 
@@ -1229,3 +1235,76 @@ delete food.apples
 ```
 
 how to delete multiple? probably an array
+ez
+
+
+### check if object hasOwnProperty()
+```js
+let users = {
+  Alan: {
+    age: 27,
+    online: true
+  },
+  Jeff: {
+    age: 32,
+    online: true
+  },
+  Sarah: {
+    age: 48,
+    online: true
+  },
+  Ryan: {
+    age: 19,
+    online: true
+  }
+};
+
+function isEveryoneHere(userObj) {
+  return ["Alan", "Jeff", "Sarah", "Ryan"].every(name =>
+    userObj.hasOwnProperty(name)
+  );
+}
+```
+I initially used a switch statement but that was naive
+this is clearly a better method
+
+the `every()` method executes for each array element.
+it returns `true` if the function returns true for **all elements**
+it returns `false` if the function returns false for **one elements**
+I see. this is built for this shit.
+
+oh yeah if you take out the brackets you have to include your return statement so that's that.
+man I always take time to understand these
+
+[object has property](./../object-has-property.js)
+
+### Iterate through the keys of object with for statement
+
+if you want keys you have to 
+```js
+Object.keys(<object>)
+```
+damn
+
+
+### Modify an Array Stored in an Object
+```js
+userObj.data.friends.push(friend);
+```
+this wasn't necessarily tough, just unconventional if you will.
+[modify an array stored in an object](../modify-array-object.js)
+you didn't even have to do al that apparently.
+you can push directly.
+
+
+
+# Basic Algorithm Scripting
+### reverse a string
+```js
+  str = str.split("")
+  str.reverse()
+  str = str.join("")
+```
+
+### recursive
+first time wrote recursive without any guidance lol
