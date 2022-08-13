@@ -40,6 +40,7 @@
       - [mixed usage of single and double quotes](#mixed-usage-of-single-and-double-quotes)
       - [asignment instead of equality operator](#asignment-instead-of-equality-operator)
       - [Re-initializing Variables Inside Loop](#re-initializing-variables-inside-loop)
+    - [links](#links)
   - [basic data structures.](#basic-data-structures)
     - [arrays](#arrays)
     - [copy array items using slice()](#copy-array-items-using-slice)
@@ -57,6 +58,18 @@
 - [Basic Algorithm Scripting](#basic-algorithm-scripting)
     - [reverse a string](#reverse-a-string)
     - [recursive](#recursive)
+    - [find the longest word in string](#find-the-longest-word-in-string)
+    - [Return Largest Numbers in Arrays](#return-largest-numbers-in-arrays)
+    - [truncate a string](#truncate-a-string)
+      - [String.slice() vs String.substring()](#stringslice-vs-stringsubstring)
+    - [finders keepers (arr, function())](#finders-keepers-arr-function)
+    - [boolean primitive](#boolean-primitive)
+    - [Capitalize first letter of string.](#capitalize-first-letter-of-string)
+    - [slice and splice special cake thingy](#slice-and-splice-special-cake-thingy)
+    - [javascript falsy values](#javascript-falsy-values)
+    - [where do I belong](#where-do-i-belong)
+    - [string mutations](#string-mutations)
+    - [chunky monkey](#chunky-monkey)
 
 
 
@@ -1041,6 +1054,9 @@ this took me a while to understand but basically I wasn't realizing that the arr
 
 damn that's pathetic.
 
+### links
+[art of debugging with chrome devtools](https://medium.com/frontmen/art-of-debugging-with-chrome-devtools-ab7b5fd8e0b4#a4f3)
+
 
 ## basic data structures.
 
@@ -1308,3 +1324,314 @@ you can push directly.
 
 ### recursive
 first time wrote recursive without any guidance lol
+
+### find the longest word in string
+
+[longest word in a string](../longest-word-string.js)
+
+it's only natural that I build up confusion regarding what I want from javascripts functions
+
+
+> The difference is in the return values.
+
+> `.map()` returns a new Array of objects created by taking some action on the original item.
+
+> `.every()` returns a boolean - true if every element in this array satisfies the provided testing function. An important difference with .every() is that the test function may not always be called for every element in the array. Once the testing function returns false for any element, no more array elements are iterated. Therefore, the testing function should usually have no side effects.
+
+> `.forEach()` returns nothing - It iterates the Array performing a given action for each item in the Array.
+
+
+### Return Largest Numbers in Arrays
+[largest-number-subarray.js](../largest-number-subarray.js)
+
+to find the max in an array please use the spread operator because you need an iterable
+```js
+min = Math.min(...arr)
+```
+
+apparently the max operator takes a bunch of values expanded, and only the ... operator can do that.
+
+```js
+function largestOfFour(arr) {
+  
+  return arr.map(element => {
+    return Math.max(...element)
+  })
+}
+
+console.log(
+  largestOfFour([
+    [4, 5, 1, 3],
+    [13, 27, 18, 26],
+    [32, 35, 37, 39],
+    [1000, 1001, 857, 1],
+  ])
+);
+```
+this is how you do it longer tho lmao
+the spread operator becomes a list of arguments themselves, only to be used in place of arguments or to copy arrays. no other way.
+
+
+### truncate a string
+apparently the behavior of 
+```js
+Syntax: string.slice(start, stop);
+Syntax: string.substring(start, stop);
+```
+is basically the same.
+
+but this is apparently poor design from the javascript team.
+
+they do have differences however
+
+#### String.slice() vs String.substring()
+**common**: 
+- If `start` equals `stop`: returns an empty string
+- If `stop` is omitted: extracts characters to the end of the string
+- If either argument is greater than the string's length, the string's length will be used instead.
+
+**uncommon of substring()**:
+- If start > stop, then substring will swap those 2 arguments.
+- If either argument is negative or is NaN, it is treated as if it were 0.
+
+**uncommon of slice()**
+- If start > stop, slice() will return the empty string. ("")
+- If stop is negative: sets stop to: string.length – Math.abs(stop) (original value), except bounded at 0 (thus, Math.max(0, string.length + stop)) as covered in the ECMA specification.
+- weird behavior on Firefox and IE i think
+
+
+there's also 
+`substr()` -> start, length
+`substring()` -> start, end
+
+
+### finders keepers (arr, function())
+interesting question and interesting behavior I really can't explain
+
+[finders-keepers](../finders-keepers.js)
+no vnm nvm that's just the tests running I suppose.
+
+
+so I found a cute method to attach debuggers only when using a `--inspect flag`
+the code runs far cleaner and now I don't have to open up a separate javascript terminal, the debugger attaches itself to the node process.
+
+`node --inspect finders-keepers.js` as long as there's a breakpoint it'll catch it.
+
+also logpoints are from chrome not vscode so I tried to look up its documentation on vscode lol.
+
+I also never realized that there's a far more useful way to debug using `console.table()` which neatly displays objects that I need to know about.
+
+```js
+console.table({
+    name: "jua",
+    age: "eternal",
+    sex: "prefer not to say",
+    "okay": { value1: "okay", value3: "okay", value4:"okay" },
+  });
+```
+and the output was awesome
+```js
+┌─────────┬────────┬────────┬────────┬─────────────────────┐
+│ (index) │ value1 │ value3 │ value4 │       Values        │
+├─────────┼────────┼────────┼────────┼─────────────────────┤
+│  name   │        │        │        │        'jua'        │
+│   age   │        │        │        │      'eternal'      │
+│   sex   │        │        │        │ 'prefer not to say' │
+│  okay   │ 'okay' │ 'okay' │ 'okay' │                     │
+└─────────┴────────┴────────┴────────┴─────────────────────┘
+```
+this was a fairly complex js object but the table still managed to tell me what it was about.
+not the best idea for deeper than 3 levels of json but still pretty good regardless.
+
+this was definitely intense because I was messing around with a couple functions
+
+first approach
+```js
+function findElement(arr, func) {
+  let result = arr.map(func)
+  let index = result.indexOf(true)
+  if (index > -1) {
+    return arr[index];
+  }
+  return undefined
+}
+
+findElement([1, 2, 3, 4], (num) => num % 2 === 0);
+
+
+```
+made a map array and pulled the index out of the first true result made a basic checking and outputted it, without using a single `console.log()` which can be dangerous in production environments.
+
+way cleaner one
+```js
+function findElement(arr, func) {
+  return arr.find(func);
+}
+```
+bro wth
+
+> `.find()` returns value of first element that passes test / function
+> iteratively executes for each array element
+
+anyways that was fun I think
+```js
+return arr[arr.map(func).indexOf(true)]
+```
+this is probably what I would've simplified it to.
+I'm surprised it returns not -1
+accessing `arr[-1]` returns undefined whether I like it or not.
+
+### boolean primitive
+if you know it is a certain datatype use `typeof`
+```js
+return typeof bool === "boolean"
+```
+
+### Capitalize first letter of string.
+```js
+function titleCase(str) {
+  let result = str.split(" ")
+  result = result.map(char => {
+    char = char[0].toUpperCase() + char.slice(1)
+    return char
+  })
+  result = result.join(' ')
+  return result
+  
+}
+
+console.log(titleCase("I'm a little tea pot"));
+```
+
+did this on the browser but I need to get better.
+optimized
+```js
+function titleCase(str) {
+  return str.split(" ").map(word => {
+    return word[0].toUpperCase() + word.slice(1)
+  }).join(" ")
+  
+}
+
+console.log(titleCase("I'm a little tea pot"));
+```
+apparently this was the correct one what the hell.
+```js
+function titleCase(str) {
+  return str.split(" ").map(word => {
+    return word[0].toUpperCase() + word.slice(1).toLowerCase()
+  }).join(" ")
+  
+}
+
+titleCase("I'm a little tea pot")
+```
+[title case a sentence](../title-case-sentence.js)
+to lower case functions convert the entire array so that works.
+
+
+### slice and splice special cake thingy
+[frankenSplice.js](../frankenSplice.js)
+
+I have to trigger **parameter hints** -> Ctrl + Shift + Space
+
+```js
+function frankenSplice(arr1, arr2, n) {
+  let result = arr2.slice(0,n)
+  result.push(...arr1)
+  result.push(...arr2.slice(n))
+  console.log(result)
+  return result;
+}
+
+frankenSplice([1, 2, 3], [4, 5, 6], 1)
+```
+
+huge trouble trying to determine the exact value for slice.
+also splice changes the array itself.
+
+```js
+function frankenSplice2(arr1, arr2, n) {
+  let localArr = arr2.slice();
+  localArr.splice(n, 0, ...arr1);
+  console.log(localArr)
+  return localArr;
+}
+```
+I think I understand why its called slice and splice
+it apparently adds a slice marker or something right there.
+slice is blank and the rest has this spread operator as well.
+
+```js
+return [...arr2.slice(0, n), ...arr1, ...arr2.slice(n)];
+```
+technically this is all we needed.
+
+### javascript falsy values
+> false, null, 0, "", undefined, and NaN.
+anything other than these equate out to be a true.
+
+```js
+arr.filter(Boolean)
+```
+this is all I had to do damn.
+
+
+### where do I belong
+this took some while lmao
+```js
+function getIndexToIns(arr, num) {
+  arr.sort((a,b) => a - b)
+  let result = arr.map(element => element >= num)
+  return result.indexOf(true) !== -1? result.indexOf(true): result.length;  
+}
+```
+
+basically I didn't expect the sort function to be random and that you had to do a function had I not tried to debug the sort function that would've resulted in an L.
+`sort(function())` it only sorted based on that criteria give. so that's that. and in the end if index not found i just had to do it.
+
+solution 2
+```js
+function getIndexToIns(arr, num) {
+  return arr.filter(val => num > val).length;
+}
+```
+count number of entries smaller than new value num.
+new value inserted after this value.
+
+`filter()` creates a new array based on the pass criteria
+so just count it up.
+i basically did one of their solutions lmao.
+[getIndexToIns.js](../getIndexToIns.js)
+
+### string mutations
+
+[string-mutation.js](../string-mutation.js)
+`
+```js
+function mutation(arr) {
+  
+  return arr[1].toLowerCase().split("").every(val => arr[0].toLowerCase().split("").indexOf(val) >= 0)
+}
+
+mutation(["hello", "hey"]);
+```
+basically I just had to do this.
+got help however, I couldn't come up with this myself.
+
+
+### chunky monkey
+give array group and return 2D array.
+
+```js
+function chunkArrayInGroups(arr, size) {
+  let newArr = []
+  while(arr.length > 0) {
+    newArr.push(arr.splice(0, size))
+  }
+  return newArr;
+}
+
+chunkArrayInGroups(["a", "b", "c", "d"], 2);
+```
+we're able to comfortably use this because if splice takes an argument bigger than the size of the array, it just defaults to the end of the array. 
