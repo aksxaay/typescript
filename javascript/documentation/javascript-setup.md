@@ -36,12 +36,12 @@
     - [positive and negative lookahead](#positive-and-negative-lookahead)
     - [re-use using capture groups](#re-use-using-capture-groups)
     - [capture groups to search and replace](#capture-groups-to-search-and-replace)
-  - [Debugging.](#debugging)
+- [Debugging.](#debugging)
       - [mixed usage of single and double quotes](#mixed-usage-of-single-and-double-quotes)
       - [asignment instead of equality operator](#asignment-instead-of-equality-operator)
       - [Re-initializing Variables Inside Loop](#re-initializing-variables-inside-loop)
     - [links](#links)
-  - [basic data structures.](#basic-data-structures)
+- [basic data structures.](#basic-data-structures)
     - [arrays](#arrays)
     - [copy array items using slice()](#copy-array-items-using-slice)
     - [spread operator ES6](#spread-operator-es6)
@@ -70,6 +70,11 @@
     - [where do I belong](#where-do-i-belong)
     - [string mutations](#string-mutations)
     - [chunky monkey](#chunky-monkey)
+- [Objected Oriented Programming](#objected-oriented-programming)
+    - [javascript object method](#javascript-object-method)
+    - [Constructor Function](#constructor-function)
+    - [Constructor creation of Objects](#constructor-creation-of-objects)
+    - [instanceof instance of](#instanceof-instance-of)
 
 
 
@@ -980,7 +985,7 @@ if you combo `\s+\w` / `(\s+\W+)` you can basically conquer any **trailing** spa
 just got done with regular expressions as well? crazy bruh. 
 
 
-## Debugging.
+# Debugging.
 don't be afraid to use `typeof`
 
 it will recognize
@@ -1058,7 +1063,7 @@ damn that's pathetic.
 [art of debugging with chrome devtools](https://medium.com/frontmen/art-of-debugging-with-chrome-devtools-ab7b5fd8e0b4#a4f3)
 
 
-## basic data structures.
+# basic data structures.
 
 
 ### arrays
@@ -1634,4 +1639,58 @@ function chunkArrayInGroups(arr, size) {
 
 chunkArrayInGroups(["a", "b", "c", "d"], 2);
 ```
-we're able to comfortably use this because if splice takes an argument bigger than the size of the array, it just defaults to the end of the array. 
+we're able to comfortably use this because if splice takes an argument bigger than the size of the array, it just defaults to the end of the array.
+
+
+
+# Objected Oriented Programming
+we can have function now in objects
+
+### javascript object method
+```js
+let duck = {
+  name: "Aflac",
+  numLegs: 2,
+  sayName: function() {return "The name of this duck is " + this.name + ".";}
+};
+```
+this one has advantages since it uses `this` keyword
+
+Object can have a special type of property called `method`
+so this is basically a method
+
+### Constructor Function
+
+```js
+function Bird() {
+  this.name = "Albert";
+  this.color = "blue";
+  this.numLegs = 2;
+}
+```
+
+### Constructor creation of Objects
+```js
+unction Bird() {
+  this.name = "Albert";
+  this.color  = "blue";
+  this.numLegs = 2;
+}
+
+let blueBird = new Bird();
+```
+this is that.
+
+you can also parametrise the above
+
+### instanceof instance of
+```js
+function House(numBedrooms) {
+  this.numBedrooms = numBedrooms;
+}
+
+// Only change code below this line
+let myHouse = new House(4)
+
+myHouse instanceof House;
+```
