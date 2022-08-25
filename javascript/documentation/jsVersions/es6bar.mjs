@@ -1,4 +1,4 @@
 // you can definitely destructure
-import { getFullName } from "./foo.js";
+import { getFullName, getSurname } from "./es6foo.mjs";
 
 console.log("getFullName", getFullName("monster", "lessons"));

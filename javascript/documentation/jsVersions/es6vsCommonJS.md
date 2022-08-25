@@ -77,6 +77,13 @@ after doing bare minimum changes in es6foo.js and es6bar.js it is evident that I
 
 > Warning: To load an ES module, set "type": "module" in the package.json or use the .mjs extension.
 
-changed `es6bar.js` -> `es6bar.mjs` and it definitely worked.
+changed `es6bar.js` -> `es6bar.mjs` lets ES6 Modules run in Node JS
+
 
 just one of them is enough then.
+
+when both of them converted to es6 synatx then it works, one can't be named wrong, and vice versa.
+
+you have to maintain one code structure
+
+### export several things from the module
