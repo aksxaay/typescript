@@ -1,3 +1,4 @@
+// you can definitely destructure
 const foo = require("./foo");
 
 console.log(
