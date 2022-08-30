@@ -1,4 +1,5 @@
 
+// const { getFullName, getSurname} = require('f./foo)
 export const getFullName = (name, surname) => {
   return name + " " + surname;
 };

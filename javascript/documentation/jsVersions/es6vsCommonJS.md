@@ -87,3 +87,48 @@ when both of them converted to es6 synatx then it works, one can't be named wron
 you have to maintain one code structure
 
 ### export several things from the module
+es6bar.js
+```js
+destructure vs non destructure
+```
+
+es6 cannot use import functions inside if conditions and things, can't nest them either.
+
+require is simply just a function, simple called in runtime.
+
+es6 however is static and we can check it in check time, and there's also static analyzing tools. that only works for es6
+
+- all our imports are being hoisted
+- javascript pareses them and moves all the imports to the top.
+- always be in the beginning
+- require however will be executed wherever we wrote it.
+- imports are truly static
+- forbidden risk inputs and things.
+
+- why we still have commonJS, super difficult to get rid of commonJS because we have a huge codebase and it is difficult to get started using as a core module.
+- imports and exports from es6 are all static.
+
+### block scope & shadowing
+
+what is a block?
+`let` & `const` are **block scoped**
+that they are separate things
+
+block, scope and shadowing
+
+> block -> { } perfectly valid javascript code
+> block also called compound statement
+> combines multiple statements into a group 
+
+why do we needs this? so that we can use **multiple statements** in a place where javascript only expects a **single statement**
+
+for example an `if` condition
+
+```js
+var a;
+let b;
+const c;
+```
+these are block scoped, while var is fucking global scoped
+i knew this.
+
