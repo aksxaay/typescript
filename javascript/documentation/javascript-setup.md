@@ -75,6 +75,13 @@
     - [Constructor Function](#constructor-function)
     - [Constructor creation of Objects](#constructor-creation-of-objects)
     - [instanceof instance of](#instanceof-instance-of)
+    - [Understanding own property](#understanding-own-property)
+    - [Prototype Properties to reduce duplicated code](#prototype-properties-to-reduce-duplicated-code)
+    - [mixin?](#mixin)
+    - [yo map function actually really fucking hard bro wtf](#yo-map-function-actually-really-fucking-hard-bro-wtf)
+    - [reduce function](#reduce-function)
+    - [currying + partial + arity](#currying--partial--arity)
+    - [Intermediate Algorithmic Scripting](#intermediate-algorithmic-scripting)
 
 
 
@@ -1694,3 +1701,59 @@ let myHouse = new House(4)
 
 myHouse instanceof House;
 ```
+
+### Understanding own property
+```js
+function Bird(name) {
+  this.name = name;
+  this.numLegs = 2;
+}
+
+let canary = new Bird("Tweety");
+let ownProps = [];
+// Only change code below this line
+
+for(let property in canary){
+  if(canary.hasOwnProperty(property)){
+    ownProps.push(property);
+  }
+}
+```
+OUTPUT
+```
+["name", "numLegs"]
+```
+
+### Prototype Properties to reduce duplicated code
+
+```js
+function Dog(name) {
+  this.name = name;
+}
+
+Dog.prototype.numLegs = 3;
+
+
+// Only change code above this line
+let beagle = new Dog("Snoopy");
+```
+
+beagle now will have property `beagle.numLegs` equal to some value.
+
+
+### mixin?
+
+
+### yo map function actually really fucking hard bro wtf
+
+[freecodecamp // maps](https://www.freecodecamp.org/learn/javascript-algorithms-and-data-structures/functional-programming/use-the-map-method-to-extract-data-from-an-array)
+
+
+### reduce function
+The reduce method allows for more general forms of array processing, and it's possible to show that both `filter` and `map` can be derived as special applications of reduce
+
+
+### currying + partial + arity
+
+
+### Intermediate Algorithmic Scripting

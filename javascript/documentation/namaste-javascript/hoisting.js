@@ -1,7 +1,9 @@
 // debugger here
 
+console.log(getName)
 getName();
 // getName2();
+// getName3();
 
 console.log(x);
 console.log(getName);
@@ -21,3 +23,5 @@ var getName2 = () => {
 var getName3 = function() {
   console.log("Namaste Javascript3")
 }
+
+getName2();

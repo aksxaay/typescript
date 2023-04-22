@@ -1,5 +1,6 @@
 - [namaste javascript](#namaste-javascript)
     - [Overview](#overview)
+    - [History](#history)
     - [1. Execution Context](#1-execution-context)
     - [2. Call Stack](#2-call-stack)
     - [Hoisting](#hoisting)
@@ -7,7 +8,7 @@
     - [window and this keyword](#window-and-this-keyword)
       - [Global Object - window](#global-object---window)
     - [undefined](#undefined)
-    - [scope-chain (interview) scope, Lexical Environment](#scope-chain-interview-scope-lexical-environment)
+    - [scope-chain (interview) scope, Lexical Environment and closures](#scope-chain-interview-scope-lexical-environment-and-closures)
     - [let + const behaviour hoisting and functions](#let--const-behaviour-hoisting-and-functions)
     - [scope of let / const](#scope-of-let--const)
       - [shadowing](#shadowing)
@@ -22,10 +23,47 @@
 - synchronous / asynchronous
 - single / multi threaded
 
+js is interpreted language, can be run line by line
+javascript is
+(ECMA defined)
+- High-Level
+- Dynamic Weak Typed
+- Multi-Paradigm
+  - Imperative  - OO - procedural
+  - Declarative - Functional - logical
+- Prototype-based
+(Browser Defined)
+- single-threaded
+- garbage-collected
+- non-blocking
+- JIT - Just In Time Compiled
+- event loop
+
+
+### History
+
+Javascript - Mocha - First Class Functions, Dynamic Type, and things.
+ECMAScript came because Microsoft was leading their own Javascript as well.
+ES3 - came about
+
+2008 - V8 engine
+NodeJS - serverside js runtime - Event Loop - let you write Event Driven non-blocking code
+
+js everywhere paradigm.
+ES6 (ES2015)
+- spread syntax
+- arrow functions
+- `let` and `const`
+- destructuring
+
 
 ### 1. Execution Context
+
+Execution context created when you run javascript program
 box / container where all the code is executed
 big box 2 components
+- memory component (variable and function environment)
+- code component (thread of execution)
 
 Memory component => variable environment
 Code component => one line at a time
@@ -34,32 +72,56 @@ Code component => one line at a time
 - whole code executed
 - synchronous + single threaded language.
 
-sync => one command at a time
+javascript is 
+synchronous => one command at a time
 single thread => in specific order
 
-AJAX - asynchronous
-Execution context is what makes javascript beautiful
+AJAX - Asynchronous Javascript and XML.
+Jquery - js library (interacts directly with the DOM)
+React - interacts the "virtual DOM"
+Execution context is what makes javascript beautiful.
+
+jQuery - interactive without the need for low-level DOM manipulation. Had extensions and plugins as well.
+
+Ajax - creating dynamic and responsive we applications. Technique used to send and receive data from a server without having to refresh the entire web page. Basically partial updates.
+
+Basically three things that had to be taken care of
+- DOM Manipulation
+- Data fetching
+- Event handling
+
+The things from react that helped "replace" sorta was, 
+- create reusable and modular components that handle their own rendering and state management.
+- you didn't have to manually manipulate the DOM as much, and let React take care of it.
+- `fetch()` and `axios` makes async calls to server and API. 
+- JQuery made it easier to handle clicks, keypresses and form submissions. React has its own event handling system.
+
 
 ---
 
 ### 2. Call Stack
+
+It is the mechanism present in V8 browser engine / Node js runtime, which manages Execution Contexts
+
 Javascript Engine
 run
 - execution context is created
 - global execution context is created
-- Memory | Code
+- Memory Allocation Phase | Code Execution Phase
 - CRE -> creation phase / memory creation phase
 - allocates all memory to `n: undefined` every function is also auto allocated
 - skims through the whole program and allocates all variables and functions
 - undefined deserves a separate video altogether
-- whole function code is copied over
+- whole function code is stored at the execution context
 - function invocation
+- function invocation creates a new [execution context](./execution-context.js)
 
 when function is run **brand new execution context** created, basically like nested objects and things.
 
 
 Phase2 -> Code Execution Phase
 return goes back to the original execution context
+pops the context from the callstack
 - program over = execution context is deleted
 
 the entire thing is knows as the call stack
@@ -69,16 +131,21 @@ they all keep getting popped in the stack
 GEC -> global execution context
 
 > "Call stack maintains the order of execution of execution contexts"
-- Call Stack
+
+Alternate Names of Call Stack
 - ECS - Execution Context STack
 - Program Stack
 - Control Stack
 - Runtime Stack
 - Machine Stack
 
+Call Stack is a stack of (GEC) Global Execution Contexts.
+
 ---
 
 ### Hoisting
+
+Hoisting - mechanism in Javascript where the all variable declarations are moved to the top of the scope before execution. Therefore it is possible to call a function before initializing it.
 
 `undefined` vs not defined
 `var` all happens because of hoisting.
@@ -111,7 +178,9 @@ although theres nothing to setup
 it still sets up GCE
 there a `window` object auto object. this is a huge object with functions and methods, created by javascript engines
 `this` keyword also works, and at global it points with the `window` object
-created along with the GCE, Globabl Object, this variable is created
+created along with the GCE, Global Object, this variable is created
+
+window.a = this.a = a
 
 #### Global Object - window
 - chrome - js V8 engine
@@ -145,8 +214,6 @@ even tho a variable hasn't been executed it already allocates memory to a
 
 on nodeJS it probably doesn't work this way, but for some reason in browser `a` is already given allocation
 
-upon checking the debug console, a is simply not define even with var.
-nvm  i'm just dumb as fuck
 
 ```js
 // breakpoint
@@ -163,12 +230,14 @@ undefined is memory allocated but not initialized to a value.
 `undefined` is a variable placeholder
 
 javascript is a loosely typed language
+- weakly typed language
+
 does not attach its variable to any specific data type
 very flexible
 - strict typed
 
 
-never do 
+never do, because `undefined` is just meant for the interpreter and compiler
 ```js
 a = undefined
 ```
@@ -176,7 +245,7 @@ not permitted
 usually only meant for undefined, show that variable was even assigned anything.
 
 
-### scope-chain (interview) scope, Lexical Environment
+### scope-chain (interview) scope, Lexical Environment and closures
 - lexical environment
 - understanding closures as well.
 
@@ -211,14 +280,17 @@ lecxical -> hierarchy / in sequence
 
 > whenever EC -> you get reference to LE of its lexical parent + Memory and Code
 lexical parent of a() is c()
-this orange diagram or something lmao
+this orange thing - lexical env of parent
+
+There's apparently this `[[Scopes]]` in the debugger that reveals other variables.
 
 GCE's LE -> null
 
-this whole process of looking for parent of parent of parent LE is known as scope-chain
+> this whole process of looking for parent of parent of parent LE is known as scope-chain
 
-Scope-chain -> Chain of LE and Parent references
+**Scope-chain** -> Chain of LE and Parent references
 if JS does not reference in local memory goes up one level of LE
+this is due to scope-chain, it just traverses it
 
 apparently the call stack gives the scope chaining all away
 
@@ -242,6 +314,11 @@ hoisting is just that the memory is allocated even before the actual assignment 
 
 a cannot be run because it gives us error
 
+Script (in chrome debugger, node doesn't have this Script separation)
+`a: undefined`
+
+
+
 we're going to view the DevTools
 `a` is allocated memory
 `b` is also allocated
@@ -257,8 +334,8 @@ if trying to access in this meanwhile, it'll give you a `Reference Error`
 trying to access variable in temporal deadzone you get `ReferenceError` there is a difference in the error.
 
 let variables also cannot be accessed in the window variable.
-
 `this.a` also doesn't work.
+var is accessible through `this` and `global`
 
 re-declaration of `let` the js engine will not tolerate
 wont even do syntax error can't be fucked around with.
@@ -281,6 +358,16 @@ very important in the interview they always fucking ask this.
 
 
 ### scope of let / const
+
+[check](./block-scope.js)
+`let` and `const` are block scoped
+`{}` definition is called block / compound statement
+used to combine multiple javascript statements
+
+shadowing
+- illegal shadowing
+- 
+
 very important that's why they have a separate video 
 
 outside the block the let get deallocated meanwhile the var remains or something
@@ -322,6 +409,12 @@ this lexical parent searching is literally just closure
 
 there is a closure scope?
 > function along with its lexical scope forms a closure
+
+I put a debugger inside and all of a sudden there's closure?
+before we were only dealing with `block` now we have functions
+
+also when you return these functions is when closures become more complex, now they need to have their lexical env right?
+
 
 ```js
 function x(){
