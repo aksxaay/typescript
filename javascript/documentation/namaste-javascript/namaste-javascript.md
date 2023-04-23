@@ -15,6 +15,8 @@
     - [closures](#closures)
       - [corner cases](#corner-cases)
       - [uses of closures](#uses-of-closures)
+    - [disadvantages of closures](#disadvantages-of-closures)
+    - [relation garbage collection, memory leaks and closures](#relation-garbage-collection-memory-leaks-and-closures)
 
 # namaste javascript
 [video source // youtube](https://www.youtube.com/watch?v=ZvbzSrg0afE&list=PLlasXeu85E9cQ32gLCvAvr9vNaUccPVNP&index=2)
@@ -462,5 +464,12 @@ bro I don't even get my own closure code bruh
 
 basically closures are everywhere
 
+### disadvantages of closures
+- overconsumption of memory
+- closed over variables aren't garbage collected till the program expires.
+- memory leaks, will overgrow the stack segment and into other parts of the memory.
+
+
+### relation garbage collection, memory leaks and closures
 
 Very famous setTimeout + closures implementation question that people can't answer

@@ -2,7 +2,9 @@
 
 // it somehow stops behaving like a regular function
 // I couldn't access count variable without a getter / setter
-function counter() {
+
+// naming stuff like class / constructor use capital
+function Counter() {
   hiddenCount = 0;
   this.count = 0;
   this.incrementCounter = function () {
@@ -19,7 +21,7 @@ function counter() {
   this.getHiddenCount = () => console.log(hiddenCount);
 }
 
-let counterInstance = new counter();
+let counterInstance = new Counter();
 counterInstance.incrementCounter();
 
 // can get count both ways now
